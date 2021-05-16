@@ -5,7 +5,8 @@ import {
     ADD_MOVIES,
     ADD_TO_FAVOURITE,
     REMOVE_FROM_FAVOURITES,
-    SET_SHOW_FAVOURITES
+    SET_SHOW_FAVOURITES,
+    ADD_MOVIE_TO_LIST
 } from '../actions';
 
 
@@ -49,7 +50,12 @@ export function movies(state = initialMoviesState, action){
             return {
                 ...state,
                 showFavourites: action.val
-            }    
+            }   
+        case  ADD_MOVIE_TO_LIST:
+            return {
+                ...state,
+                list : [action.movie , ...state.list]
+            }     
         default:
             return state;      
     }
