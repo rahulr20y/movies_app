@@ -24,12 +24,21 @@ import rootReducer from './reducers';
 
 const logger = ({dispatch , getState}) => (next) => (action) => {
       //logger code
-      console.log('ACTION_TYPE' , action.type);
+      //console.log('ACTION_TYPE' , action.type);
       next(action);
 }
 
+const thunk = ({dispatch , getState}) => (next) => (action) => {
 
-const store = createStore(rootReducer, applyMiddleware(logger));
+  if(typeof action === 'function') {
+    action(dispatch);
+    return;
+  }
+  next(action);
+}
+
+
+const store = createStore(rootReducer, applyMiddleware(logger,thunk));
 console.log('store',store);
 // console.log('BEFORE STATE',store.getState());
 // store.dispatch({
