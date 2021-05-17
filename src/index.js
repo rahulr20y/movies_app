@@ -1,4 +1,5 @@
-import React, { createContext } from 'react';
+import React from 'react';
+import {Provider} from 'react-redux';
 import ReactDOM from 'react-dom';
 import {createStore, applyMiddleware} from 'redux';
 
@@ -41,58 +42,58 @@ const thunk = ({dispatch , getState}) => (next) => (action) => {
 const store = createStore(rootReducer, applyMiddleware(logger,thunk));
 console.log('store',store);
 
-export const StoreContext = createContext();
-console.log('StoreContext', StoreContext);
+// export const StoreContext = createContext();
+// console.log('StoreContext', StoreContext);
 
-class Provider extends React.Component {
-  render() {
-    const {store} = this.props;
-    return (
-       <StoreContext.Provider value={store}>
-         {this.props.children}
-       </StoreContext.Provider>
-    );
-  }
-}
+// class Provider extends React.Component {
+//   render() {
+//     const {store} = this.props;
+//     return (
+//        <StoreContext.Provider value={store}>
+//          {this.props.children}
+//        </StoreContext.Provider>
+//     );
+//   }
+// }
 
 
 //const connectedAppComponent = connect(callback)(App); 
-export function connect(callback) {
-  return function(Component) {
-      class ConnectedComponent extends React.Component {
-        constructor (props) {
-          super(props);
-          this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
-        }
+// export function connect(callback) {
+//   return function(Component) {
+//       class ConnectedComponent extends React.Component {
+//         constructor (props) {
+//           super(props);
+//           this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
+//         }
 
-        componentWillUnmount(){
-          this.unsubscribe();
-        }
-        render () {
-          const {store} = this.props;
-          const state = store.getState();
-          const dataToBePassedAsProps = callback(state);
-          return (
-           <Component
-             {...dataToBePassedAsProps}
-             dispatch={store.dispatch}
-           />
-          );
-        }
-      }
+//         componentWillUnmount(){
+//           this.unsubscribe();
+//         }
+//         render () {
+//           const {store} = this.props;
+//           const state = store.getState();
+//           const dataToBePassedAsProps = callback(state);
+//           return (
+//            <Component
+//              {...dataToBePassedAsProps}
+//              dispatch={store.dispatch}
+//            />
+//           );
+//         }
+//       }
 
-      class ConnectedComponentWrapper extends React.Component {
-        render() {
-          return (
-            <StoreContext.Consumer>
-              {(store) => <ConnectedComponent store={store} />}
-            </StoreContext.Consumer>
-          );
-        }
-      }
-      return ConnectedComponentWrapper;
-  }
-}
+//       class ConnectedComponentWrapper extends React.Component {
+//         render() {
+//           return (
+//             <StoreContext.Consumer>
+//               {(store) => <ConnectedComponent store={store} />}
+//             </StoreContext.Consumer>
+//           );
+//         }
+//       }
+//       return ConnectedComponentWrapper;
+//   }
+// }
 
 
 // console.log('BEFORE STATE',store.getState());

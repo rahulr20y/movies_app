@@ -1,7 +1,6 @@
 import React from 'react';
-//import {data} from '../data';
+import {connect} from 'react-redux';
 import { addMovieToList, handleMovieSearch } from '../actions';
-import { StoreContext } from '../index';
 
 class Navbar extends React.Component {
 
@@ -13,7 +12,7 @@ class Navbar extends React.Component {
     }
 
     handleAddToMovies = (movie) => {
-        this.props.store.dispatch(addMovieToList(movie));
+        this.props.dispatch(addMovieToList(movie));
         this.setState({
             showSearchResults : false
         })
@@ -21,7 +20,7 @@ class Navbar extends React.Component {
     handleSearch = () =>{
         const {searchText} = this.state;
         //console.log(searchText);
-        this.props.store.dispatch(handleMovieSearch(searchText));
+        this.props.dispatch(handleMovieSearch(searchText));
     }
     handleChange = (e) => {
         this.setState({
@@ -58,18 +57,24 @@ class Navbar extends React.Component {
 
 }
 
-class NavbarWrapper extends React.Component{
-    render(){
-        return(
-            <StoreContext.Consumer>
-                {
-                    (store) =>{
-                        return(<Navbar dispatch={store.dispatch} search={this.props.search}/>)
-                    }
-                }
-            </StoreContext.Consumer>
-        )
-    }
+// class NavbarWrapper extends React.Component{
+//     render(){
+//         return(
+//             <StoreContext.Consumer>
+//                 {
+//                     (store) =>{
+//                         return(<Navbar dispatch={store.dispatch} search={this.props.search}/>)
+//                     }
+//                 }
+//             </StoreContext.Consumer>
+//         )
+//     }
+// }
+
+function mapStateToProps({search}) {
+    return {
+        search:search
+    };
 }
 
-export default NavbarWrapper;
+export default connect(mapStateToProps)(Navbar);
